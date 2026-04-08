@@ -74,9 +74,7 @@ export async function POST(request: Request) {
         contactNumber: contactNumber.trim(),
         email: email?.trim() || null,
         status: "CONFIRMED",
-        // Pass the plain object — Prisma serialises Json? fields correctly
-        // for both SQLite (dev) and PostgreSQL (production).
-        archivePayload,
+        archivePayload: JSON.stringify(archivePayload),
       },
     });
 
