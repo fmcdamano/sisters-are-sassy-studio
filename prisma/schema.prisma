@@ -1,0 +1,56 @@
+// Prisma schema — Sisters are Sassy Studio (Pipeline B)
+// Field names deliberately mirror Pipeline A's Session model for zero-friction Phase 3 integration.
+// See lib/hooks/archiveHook.ts for the dormant integration hook.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PROVIDER NOTE:
+//   LOCAL DEV  → provider = "sqlite",     DATABASE_URL = "file:./dev.db"
+//   PRODUCTION → provider = "postgresql", DATABASE_URL = <Neon connection string>
+//
+// Before deploying to Vercel:
+//   1. Change provider to "postgresql"
+//   2. Set DATABASE_URL in Vercel env vars to your Neon connection string
+//   3. Run: prisma migrate deploy
+// ─────────────────────────────────────────────────────────────────────────────
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Booking {
+  id    String @id @default(cuid())
+  token String @unique // nanoid(12) — used in QR URL /booking/[token]
+
+  // Archive-compatible fields — must match Pipeline A's Session model exactly
+  firstName String
+  lastName  String
+  year      Int // derived from eventDate at creation
+  month     Int // derived from eventDate at creation
+  eventType String // comma-separated tags — maps to Pipeline A's tags field
+
+  // Booking-specific fields
+  eventDate     DateTime
+  packageId     String
+  contactNumber String
+  email         String? // optional; required for confirmation email
+
+  // Scope change tracking
+  scopeNotes String? // populated when client submits a scope change request
+
+  // Status — stored as String for SQLite compatibility.
+  // Valid values: PENDING | CONFIRMED | SCOPE_CHANGE_REQUESTED | SOFT_CANCELLED | COMPLETED
+  // When switching to PostgreSQL for production, restore the BookingStatus enum and
+  // change this field back to: status BookingStatus @default(PENDING)
+  status String @default("PENDING")
+
+  // Integration hook payload — stored as JSON string for SQLite compatibility.
+  // Parse with JSON.parse() when reading. Switch back to Json? for PostgreSQL.
+  archivePayload String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
