@@ -3,7 +3,8 @@ import { prisma } from "@/lib/db";
 import { sendStudioNotificationEmail } from "@/lib/email/sendConfirmationEmail";
 import type { BookingStatus } from "@/lib/types/booking";
 
-const ALLOWED_PATCH_STATUSES: BookingStatus[] = ["SCOPE_CHANGE_REQUESTED", "SOFT_CANCELLED"];
+const ALLOWED_PATCH_STATUSES = ["SCOPE_CHANGE_REQUESTED", "SOFT_CANCELLED"] as const;
+type AllowedPatchStatus = (typeof ALLOWED_PATCH_STATUSES)[number];
 
 /**
  * GET /api/bookings/[token]
@@ -57,17 +58,19 @@ export async function PATCH(
 ) {
   try {
     const body = await request.json();
-    const { status, scopeNotes } = body as {
+    const { status: rawStatus, scopeNotes } = body as {
       status?: BookingStatus;
       scopeNotes?: string;
     };
 
-    if (!status || !ALLOWED_PATCH_STATUSES.includes(status)) {
+    if (!rawStatus || !(ALLOWED_PATCH_STATUSES as readonly string[]).includes(rawStatus)) {
       return NextResponse.json(
         { error: `Status must be one of: ${ALLOWED_PATCH_STATUSES.join(", ")}` },
         { status: 400 }
       );
     }
+
+    const status = rawStatus as AllowedPatchStatus;
 
     // Verify booking exists before updating
     const existing = await prisma.booking.findUnique({
