@@ -54,3 +54,19 @@ model Booking {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model PortfolioSlotAsset {
+  id             String   @id @default(cuid())
+  slotId         String   @unique
+  assignmentId   String
+  sourceFileId   String
+  tierLabel      String
+  sourceVersion  Int
+  protocolVersion String
+  localPath      String
+  checksum       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([sourceVersion])
+}

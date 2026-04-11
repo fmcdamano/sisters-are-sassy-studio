@@ -2,9 +2,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { HOMEPAGE_PREVIEW_IMAGES } from "@/lib/constants/portfolio";
+import { prisma } from "@/lib/db";
 
-export function PortfolioPreviewGrid() {
-  const [img1, img2, img3, img4, img5] = HOMEPAGE_PREVIEW_IMAGES;
+export async function PortfolioPreviewGrid() {
+  const slotRows = await prisma.portfolioSlotAsset.findMany({
+    where: { slotId: { in: HOMEPAGE_PREVIEW_IMAGES.map((item) => item.slotId).filter(Boolean) as string[] } },
+    select: { slotId: true, localPath: true },
+  });
+  const slotMap = slotRows.reduce<Record<string, string>>((acc, row) => {
+    acc[row.slotId] = row.localPath;
+    return acc;
+  }, {});
+
+  const images = HOMEPAGE_PREVIEW_IMAGES.map((item) => ({
+    ...item,
+    src: item.slotId && slotMap[item.slotId] ? slotMap[item.slotId] : `/portfolio/${item.filename}`,
+  }));
+  const [img1, img2, img3, img4] = images;
 
   return (
     <section className="section-py">
@@ -43,7 +57,7 @@ export function PortfolioPreviewGrid() {
         {img1 && (
           <div className="relative overflow-hidden group">
             <Image
-              src={`/portfolio/${img1.filename}`}
+              src={img1.src ?? `/portfolio/${img1.filename}`}
               alt={img1.alt}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -56,7 +70,7 @@ export function PortfolioPreviewGrid() {
         {img2 && (
           <div className="relative overflow-hidden group" style={{ gridRow: "1 / 3" }}>
             <Image
-              src={`/portfolio/${img2.filename}`}
+              src={img2.src ?? `/portfolio/${img2.filename}`}
               alt={img2.alt}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -69,7 +83,7 @@ export function PortfolioPreviewGrid() {
         {img3 && (
           <div className="relative overflow-hidden group">
             <Image
-              src={`/portfolio/${img3.filename}`}
+              src={img3.src ?? `/portfolio/${img3.filename}`}
               alt={img3.alt}
               fill
               className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
@@ -82,7 +96,7 @@ export function PortfolioPreviewGrid() {
         {img4 && (
           <div className="relative overflow-hidden group" style={{ gridColumn: "1" }}>
             <Image
-              src={`/portfolio/${img4.filename}`}
+              src={img4.src ?? `/portfolio/${img4.filename}`}
               alt={img4.alt}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -94,10 +108,10 @@ export function PortfolioPreviewGrid() {
 
       {/* Mobile: simple 2-column grid */}
       <div className="md:hidden grid grid-cols-2 gap-0.5">
-        {HOMEPAGE_PREVIEW_IMAGES.slice(0, 4).map((image) => (
+        {images.slice(0, 4).map((image) => (
           <div key={image.filename} className="relative aspect-square overflow-hidden group">
             <Image
-              src={`/portfolio/${image.filename}`}
+              src={image.src ?? `/portfolio/${image.filename}`}
               alt={image.alt}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"

@@ -12,6 +12,7 @@ export function PortfolioGrid() {
   const initialFilter = searchParams.get("filter") ?? "all";
   const [activeFilter, setActiveFilter] = useState(initialFilter);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [slotMap, setSlotMap] = useState<Record<string, string>>({});
 
   // Sync filter with URL param changes (e.g. from SessionCategoryTeaser links)
   useEffect(() => {
@@ -19,24 +20,36 @@ export function PortfolioGrid() {
     setActiveFilter(filter);
   }, [searchParams]);
 
+  useEffect(() => {
+    fetch("/api/portfolio/slots")
+      .then((res) => (res.ok ? res.json() : { slots: {} }))
+      .then((data) => setSlotMap(data.slots ?? {}))
+      .catch(() => setSlotMap({}));
+  }, []);
+
   const filtered =
     activeFilter === "all"
       ? PORTFOLIO_IMAGES
       : PORTFOLIO_IMAGES.filter((img) => img.filterTag === activeFilter);
+
+  const resolvedImages = filtered.map((image) => ({
+    ...image,
+    src: image.slotId && slotMap[image.slotId] ? slotMap[image.slotId] : `/portfolio/${image.filename}`,
+  }));
 
   return (
     <>
       <FilterBar activeFilter={activeFilter} onFilterChange={setActiveFilter} />
 
       <div className="mt-6">
-        {filtered.length === 0 ? (
+        {resolvedImages.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 gap-4 text-gray-400">
             <Camera size={40} strokeWidth={1} />
             <p className="text-sm">No photos in this category yet — check back soon!</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-            {filtered.map((image, index) => (
+            {resolvedImages.map((image, index) => (
               <button
                 key={image.filename}
                 onClick={() => setLightboxIndex(index)}
@@ -44,7 +57,7 @@ export function PortfolioGrid() {
                 aria-label={`Open: ${image.alt}`}
               >
                 <Image
-                  src={`/portfolio/${image.filename}`}
+                  src={image.src ?? `/portfolio/${image.filename}`}
                   alt={image.alt}
                   fill
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -64,7 +77,7 @@ export function PortfolioGrid() {
 
       {lightboxIndex !== null && (
         <LightboxModal
-          images={filtered}
+          images={resolvedImages}
           initialIndex={lightboxIndex}
           onClose={() => setLightboxIndex(null)}
         />

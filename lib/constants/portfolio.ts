@@ -1,5 +1,7 @@
 export interface PortfolioImage {
   filename: string;
+  slotId?: string;
+  src?: string;
   /** Descriptive alt text — includes session type and location for SEO */
   alt: string;
   /** Human-readable category label */
@@ -20,6 +22,7 @@ export interface PortfolioImage {
 export const PORTFOLIO_IMAGES: PortfolioImage[] = [
   {
     filename: "newborn-pink-robe-crib.jpg",
+    slotId: "portfolio-feature-1",
     alt: "Newborn baby in pink robe resting in a crib — newborn portrait session in Tacloban City, Leyte",
     category: "Newborn",
     filterTag: "newborn",
@@ -27,18 +30,21 @@ export const PORTFOLIO_IMAGES: PortfolioImage[] = [
   },
   {
     filename: "newborn-basket-blue-name-board.jpg",
+    slotId: "portfolio-feature-2",
     alt: "Newborn baby in a wicker basket with blue name board — studio newborn photography in Tacloban City",
     category: "Newborn",
     filterTag: "newborn",
   },
   {
     filename: "newborn-basket-giraffe-teal.jpg",
+    slotId: "portfolio-feature-3",
     alt: "Newborn baby in a teal-accented basket with giraffe prop — newborn session in Leyte, Philippines",
     category: "Newborn",
     filterTag: "newborn",
   },
   {
     filename: "easter-baby-bunny-backdrop.jpg",
+    slotId: "portfolio-feature-4",
     alt: "Baby in Easter bunny costume with floral backdrop — Easter baby portrait in Tacloban City",
     category: "Easter Baby",
     filterTag: "easter",
@@ -99,6 +105,7 @@ export const PORTFOLIO_IMAGES: PortfolioImage[] = [
   },
   {
     filename: "maternity-tulle-gown-boho.jpg",
+    slotId: "hero-primary",
     alt: "Expecting mother in flowing boho tulle gown — maternity portrait session in Tacloban City, Leyte",
     category: "Maternity",
     filterTag: "maternity",

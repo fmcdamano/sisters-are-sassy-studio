@@ -1,12 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
+import { prisma } from "@/lib/db";
 
-export function HeroSection() {
+export async function HeroSection() {
+  const heroAsset = await prisma.portfolioSlotAsset.findUnique({
+    where: { slotId: "hero-primary" },
+    select: { localPath: true },
+  });
+  const heroSrc = heroAsset?.localPath ?? "/portfolio/maternity-tulle-gown-boho.jpg";
+
   return (
     <section className="relative h-screen w-full overflow-hidden -mt-16">
       {/* Full-bleed hero image */}
       <Image
-        src="/portfolio/maternity-tulle-gown-boho.jpg"
+        src={heroSrc}
         alt="Portrait session — Sisters are Sassy Studio, Tacloban City, Leyte"
         fill
         className="object-cover object-[center_20%]"

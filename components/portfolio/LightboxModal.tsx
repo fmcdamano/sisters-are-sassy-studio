@@ -101,7 +101,7 @@ export function LightboxModal({ images, initialIndex, onClose }: LightboxModalPr
         <div className="relative w-full rounded-card overflow-hidden bg-black/50"
           style={{ aspectRatio: "4/3" }}>
           <Image
-            src={`/portfolio/${current.filename}`}
+            src={current.src ?? `/portfolio/${current.filename}`}
             alt={current.alt}
             fill
             className="object-contain"
