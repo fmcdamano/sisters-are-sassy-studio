@@ -1,45 +1,62 @@
 /**
- * Archive Integration Hook — Pipeline B → Pipeline A
+ * Archive Integration Hook — Pipeline C (Bookings)
  *
- * STATUS: DORMANT in Phase 2. Do not wire up until Phase 3.
+ * STATUS: ACTIVE in Phase 3. Sends the full booking payload to the
+ * omen-studio-archive ingest endpoint on every confirmed booking.
  *
- * This function is called on every successful booking confirmation.
- * In Phase 2 it only logs the payload and does nothing else.
+ * Activation requirements:
+ *   ARCHIVE_INGEST_URL  — e.g. https://archive.sistersaresassystudio.com
+ *   ARCHIVE_INGEST_SECRET — shared secret; must match WEBSITE_INGEST_SECRET
+ *                           in the archive app's environment
  *
- * Phase 3 wire-up:
- * 1. Provision ARCHIVE_API_URL and ARCHIVE_API_KEY environment variables
- * 2. Uncomment the fetch() call below
- * 3. No data model changes required on either side — the mapping is already correct
- *
- * Field mapping (Pipeline B → Pipeline A):
- *   booking.lastName   → session.lastName
- *   booking.firstName  → session.firstName
- *   booking.year       → session.year (Int)
- *   booking.month      → session.month (Int)
- *   booking.eventType  → session.tags (comma-separated String)
+ * Safety guarantees:
+ *   - Fire-and-forget: never awaits a response that blocks the booking flow
+ *   - Never throws: all errors are swallowed and logged only
+ *   - 5-second timeout: prevents slow archive responses from hanging the booking API
  */
-export async function emitToArchive(booking: {
-  lastName: string;
-  firstName: string;
-  year: number;
-  month: number;
-  eventType: string; // comma-separated tags matching Pipeline A's tag format
-}): Promise<void> {
-  // TODO Phase 3: Wire this function to call omen-studio-archive POST /api/sessions
-  // await fetch(`${process.env.ARCHIVE_API_URL}/api/sessions`, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     "x-api-key": process.env.ARCHIVE_API_KEY ?? "",
-  //   },
-  //   body: JSON.stringify({
-  //     lastName: booking.lastName,
-  //     firstName: booking.firstName,
-  //     year: booking.year,
-  //     month: booking.month,
-  //     tags: booking.eventType,
-  //   }),
-  // });
 
-  console.log("[Phase 3 Hook — DORMANT] Would emit to archive:", booking);
+export interface ArchiveIngestPayload {
+  token: string;
+  source: "WEBSITE";
+  status: "CONFIRMED";
+  firstName: string;
+  lastName: string;
+  sessionType: string;
+  packageId: string;
+  preferredDate: string; // ISO string
+  contactNumber: string;
+  email?: string | null;
+  notes?: string | null;
+  archivePayloadJson?: string | null;
+}
+
+// NOT async — returns void synchronously so no floating Promise enters the RSC event loop.
+// fetch runs entirely in the background via .then().catch(); clearTimeout always fires.
+export function emitToArchive(payload: ArchiveIngestPayload): void {
+  const url = process.env.ARCHIVE_INGEST_URL;
+  const secret = process.env.ARCHIVE_INGEST_SECRET;
+
+  // Silently skip if not configured — does not block booking creation
+  if (!url || !secret) {
+    console.log("[Archive Hook] ARCHIVE_INGEST_URL or ARCHIVE_INGEST_SECRET not set — skipping");
+    return;
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 5000);
+
+  fetch(`${url}/api/bookings/ingest`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Ingest-Secret": secret,
+    },
+    body: JSON.stringify(payload),
+    signal: controller.signal,
+  })
+    .then(() => clearTimeout(timeout))
+    .catch((err) => {
+      clearTimeout(timeout);
+      console.error("[Archive Hook] emitToArchive failed (non-blocking):", err);
+    });
 }

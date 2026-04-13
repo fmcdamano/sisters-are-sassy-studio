@@ -91,13 +91,19 @@ export async function POST(request: Request) {
       }).catch(console.error);
     }
 
-    // Fire integration hook — DORMANT in Phase 2
-    await emitToArchive({
-      lastName: booking.lastName,
+    // Fire integration hook — active in Phase 3 (fire-and-forget, never throws)
+    emitToArchive({
+      token: booking.token,
+      source: "WEBSITE",
+      status: "CONFIRMED",
       firstName: booking.firstName,
-      year: booking.year,
-      month: booking.month,
-      eventType: booking.eventType,
+      lastName: booking.lastName,
+      sessionType: booking.eventType,
+      packageId: booking.packageId,
+      preferredDate: booking.eventDate.toISOString(),
+      contactNumber: booking.contactNumber,
+      email: booking.email ?? null,
+      archivePayloadJson: booking.archivePayload,
     });
 
     return NextResponse.json({ token: booking.token }, { status: 201 });
