@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -14,12 +15,28 @@ const navLinks = [
 export function NavBar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [pathname]);
+
+  // Close mobile menu on Escape key
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && menuOpen) setMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
 
   return (
     <header
@@ -77,8 +94,9 @@ export function NavBar() {
             scrolled ? "text-ink" : "text-cream"
           )}
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-          aria-expanded={menuOpen}
+          aria-label="Navigation menu"
+          aria-controls="mobile-menu"
+          aria-expanded={menuOpen ? "true" : "false"}
         >
           <span className={cn("block w-6 h-px bg-current transition-all duration-300", menuOpen && "rotate-45 translate-y-[9px]")} />
           <span className={cn("block w-6 h-px bg-current transition-all duration-300", menuOpen && "opacity-0")} />
@@ -87,7 +105,7 @@ export function NavBar() {
       </div>
 
       {/* Mobile drawer */}
-      <div className={cn("md:hidden overflow-hidden transition-all duration-500 bg-cream", menuOpen ? "max-h-72 border-b border-cream-deep/40" : "max-h-0")}>
+      <div id="mobile-menu" className={cn("md:hidden overflow-hidden transition-all duration-500 bg-cream", menuOpen ? "max-h-72 border-b border-cream-deep/40" : "max-h-0")}>
         <nav className="section-container py-7 flex flex-col gap-5">
           {navLinks.map((link) => (
             <Link
