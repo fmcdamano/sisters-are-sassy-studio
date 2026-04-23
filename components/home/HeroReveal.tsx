@@ -1,20 +1,21 @@
 "use client";
 
-import { motion } from "framer-motion";
+import Link from "next/link";
+import { motion, type Variants } from "framer-motion";
 
-const container = {
+const container: Variants = {
   hidden: {},
   show: {
     transition: { staggerChildren: 0.15, delayChildren: 0.3 },
   },
 };
 
-const item = {
+const item: Variants = {
   hidden: { opacity: 0, y: 36 },
   show: {
     opacity: 1,
     y: 0,
-    transition: { type: "spring" as "spring", stiffness: 55, damping: 18 },
+    transition: { type: "spring", stiffness: 55, damping: 18 },
   },
 };
 
@@ -50,18 +51,18 @@ export function HeroReveal() {
       </motion.p>
 
       <motion.div variants={item} className="flex flex-wrap gap-4 mt-10">
-        <a
+        <Link
           href="/book"
           className="font-body text-xs tracking-[0.18em] uppercase px-8 py-3.5 bg-cream text-ink hover:bg-cream-warm transition-colors duration-300"
         >
           Book a Session
-        </a>
-        <a
+        </Link>
+        <Link
           href="/portfolio"
           className="font-body text-xs tracking-[0.18em] uppercase px-8 py-3.5 border border-cream/50 text-cream hover:border-cream hover:bg-cream/10 transition-all duration-300"
         >
           View Portfolio
-        </a>
+        </Link>
       </motion.div>
     </motion.div>
   );
