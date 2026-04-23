@@ -1,25 +1,25 @@
-const ITEMS = [
-  "Families",
-  "Milestones",
-  "Memories",
-  "All captured with heart",
-  "Tacloban City, Leyte",
-  "Sisters are Sassy Studio",
-  "Since 2013",
+const phrases = [
+  "Newborn Sessions",
+  "Family Portraits",
+  "Maternity",
+  "Birthday Celebrations",
+  "Christmas Portraits",
+  "Milestone Moments",
+  "Professional Headshots",
 ];
 
-/** Teal ticker strip between hero and portfolio — scrolls infinitely */
 export function MarqueeStrip() {
-  // Duplicate items so the loop is seamless (animation translates -50%)
-  const doubled = [...ITEMS, ...ITEMS];
+  const doubled = [...phrases, ...phrases];
 
   return (
-    <div className="bg-teal overflow-hidden py-4 select-none" aria-hidden="true">
-      <div className="flex whitespace-nowrap animate-marquee">
-        {doubled.map((item, i) => (
-          <span key={i} className="inline-flex items-center gap-0 text-white font-body text-[11px] font-semibold uppercase tracking-[0.25em]">
-            <span className="px-8">{item}</span>
-            <span className="text-white/35">·</span>
+    <div className="overflow-hidden bg-ink py-4 border-y border-cream/10">
+      <div className="flex animate-marquee whitespace-nowrap">
+        {doubled.map((phrase, i) => (
+          <span key={i} className="flex items-center gap-0">
+            <span className="font-heading italic text-cream/75 text-xl md:text-2xl px-7">
+              {phrase}
+            </span>
+            <span className="text-terracotta text-xs leading-none">&#9670;</span>
           </span>
         ))}
       </div>
