@@ -1,88 +1,69 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Phone } from "lucide-react";
 
 export function Footer() {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="bg-white border-t border-light-gray mt-auto">
-      <div className="section-container py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
-          {/* Brand */}
-          <div>
-            <Link href="/" className="flex items-center gap-2 mb-3" aria-label="Sisters are Sassy Studio">
-              {/* {IMAGE: Sisters are Sassy Studio logo SVG, 36x36} */}
-              <Image src="/logo.svg" alt="" width={36} height={36} className="w-9 h-9" />
-              <span className="font-heading text-charcoal font-semibold">
-                Sisters are Sassy Studio
+    <footer className="bg-ink text-cream/70">
+      <div className="section-container py-16">
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-12 md:gap-20 pb-12 border-b border-cream/10">
+          <div className="space-y-4">
+            <Link href="/" className="flex items-center gap-3">
+              <Image
+                src="/logo.svg"
+                alt="Sisters Are Sassy Studio"
+                width={30}
+                height={30}
+                className="invert opacity-70"
+              />
+              <span className="font-heading text-xl text-cream tracking-wide">
+                Sisters Are Sassy Studio
               </span>
             </Link>
-            <p className="text-sm text-gray-500 leading-relaxed">
-              Families, milestones, and memories — captured with heart in Tacloban City.
+            <p className="text-sm leading-relaxed max-w-xs text-cream/50">
+              Capturing the moments that matter — newborns, families, and every celebration in between. Based in Tacloban City, Leyte.
             </p>
-            <p className="text-xs text-gray-400 mt-2">Tacloban City, Leyte, Philippines</p>
           </div>
 
-          {/* Navigation */}
-          <nav aria-label="Footer navigation">
-            <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-4">
-              Explore
-            </p>
-            <ul className="space-y-2">
-              {[
-                { label: "Portfolio", href: "/portfolio" },
-                { label: "Services", href: "/services" },
-                { label: "About", href: "/about" },
-                { label: "Book a Session", href: "/book" },
-              ].map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-gray-500 hover:text-teal transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <div className="space-y-3">
+            <p className="text-xs tracking-[0.18em] uppercase text-cream/30 mb-4 font-body">Navigate</p>
+            {[
+              { href: "/portfolio", label: "Portfolio" },
+              { href: "/services", label: "Services" },
+              { href: "/about", label: "About" },
+              { href: "/book", label: "Book a Session" },
+            ].map((link) => (
+              <div key={link.href}>
+                <Link href={link.href} className="text-sm text-cream/60 hover:text-cream transition-colors duration-200 ink-underline">
+                  {link.label}
+                </Link>
+              </div>
+            ))}
+          </div>
 
-          {/* Contact */}
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-4">
-              Get in touch
-            </p>
-            <ul className="space-y-3">
-              <li>
-                <a
-                  href="tel:+63XXXXXXXXXX"
-                  className="flex items-center gap-2 text-sm text-gray-500 hover:text-teal transition-colors"
-                >
-                  <Phone size={14} />
-                  +63 XXX XXX XXXX
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.facebook.com/sistersaresassystudio"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-gray-500 hover:text-teal transition-colors"
-                >
-                  <Facebook size={14} />
-                  Sisters are Sassy Studio on Facebook
-                </a>
-              </li>
-            </ul>
+          <div className="space-y-3">
+            <p className="text-xs tracking-[0.18em] uppercase text-cream/30 mb-4 font-body">Connect</p>
+            <a
+              href="https://facebook.com/sistersaresassystudio"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-sm text-cream/60 hover:text-cream transition-colors duration-200 ink-underline"
+            >
+              Facebook
+            </a>
+            <a
+              href="tel:+63XXXXXXXXXX"
+              className="block text-sm text-cream/60 hover:text-cream transition-colors duration-200"
+            >
+              Call Us
+            </a>
           </div>
         </div>
 
-        <div className="border-t border-light-gray pt-6 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-xs text-gray-400">
-            © {currentYear} Sisters are Sassy Studio. All rights reserved.
+        <div className="pt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <p className="text-xs text-cream/30 tracking-wide">
+            &copy; {new Date().getFullYear()} Sisters Are Sassy Studio. All rights reserved.
           </p>
-          <p className="text-xs text-gray-400">Tacloban City, Leyte, Philippines</p>
+          <p className="text-xs text-cream/20 font-body">Tacloban City, Leyte, Philippines</p>
         </div>
       </div>
     </footer>
