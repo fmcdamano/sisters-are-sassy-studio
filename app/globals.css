@@ -3,39 +3,32 @@
 @tailwind utilities;
 
 @layer base {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     box-sizing: border-box;
   }
 
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    @apply bg-off-white text-charcoal font-body;
-    font-size: 14px;
-    line-height: 1.6;
+    @apply bg-cream text-ink font-body;
+    font-size: 15px;
+    line-height: 1.65;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
-    line-height: 1.2;
+    line-height: 1.1;
+    font-weight: 400;
   }
 
-  /* Focus ring — teal for accessibility */
   :focus-visible {
-    @apply outline-2 outline-teal outline-offset-2;
+    @apply outline-2 outline-terracotta outline-offset-2;
   }
 
-  /* Hide scrollbar for filter bars while keeping scroll functionality */
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -46,17 +39,39 @@
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  .text-balance { text-wrap: balance; }
 
-  /* Section max-width + centering shorthand */
   .section-container {
-    @apply max-w-content mx-auto px-4 md:px-6 lg:px-8;
+    @apply max-w-content mx-auto px-5 md:px-8 lg:px-12;
   }
 
-  /* Standard section vertical padding */
   .section-py {
-    @apply py-16 md:py-24;
+    @apply py-20 md:py-32;
+  }
+
+  /* Film grain — fixed pseudo-element so it never triggers GPU repaints on scroll */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.028;
+    pointer-events: none;
+    z-index: 9999;
+    animation: grain 8s steps(1) infinite;
+  }
+
+  /* Animated underline for nav links */
+  .ink-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .ink-underline:hover {
+    background-size: 100% 1px;
   }
 }

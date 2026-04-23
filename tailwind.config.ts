@@ -9,50 +9,57 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        teal: {
-          DEFAULT: "#3DBFB8",
-          hover: "#2EA8A2",
-          light: "#E8F9F8",
+        ink: {
+          DEFAULT: "#1C1816",
+          soft: "#2E2A26",
+          muted: "#9B9189",
         },
-        coral: {
-          DEFAULT: "#E05C5C",
-          hover: "#C94F4F",
-          light: "#FCF0F0",
+        cream: {
+          DEFAULT: "#FAF9F6",
+          warm: "#EDE6DA",
+          deep: "#D9CFBF",
         },
-        peach: {
-          DEFAULT: "#F5C5A0",
-          light: "#FEF4EC",
+        terracotta: {
+          DEFAULT: "#B87B5A",
+          hover: "#A36A4A",
+          light: "#F5ECE4",
         },
-        "off-white": "#FAF8F5",
-        charcoal: "#2C2C2C",
-        "light-gray": "#E8E8E8",
-        "studio-error": "#EF4444",
-        "studio-success": "#22C55E",
+        "studio-error": "#DC4A4A",
+        "studio-success": "#3A8C6E",
       },
       fontFamily: {
-        heading: ["var(--font-playfair)", "Georgia", "serif"],
+        heading: ["var(--font-cormorant)", "Georgia", "serif"],
         body: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
       },
       borderRadius: {
-        card: "16px",
-        btn: "10px",
+        card: "4px",
+        btn: "2px",
       },
       maxWidth: {
-        content: "1280px",
+        content: "1400px",
       },
       keyframes: {
-        "fade-in": {
-          from: { opacity: "0", transform: "translateY(8px)" },
+        "fade-up": {
+          from: { opacity: "0", transform: "translateY(24px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
         marquee: {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        grain: {
+          "0%, 100%": { transform: "translate(0,0)" },
+          "10%": { transform: "translate(-2%,-3%)" },
+          "30%": { transform: "translate(3%,2%)" },
+          "50%": { transform: "translate(-1%,4%)" },
+          "70%": { transform: "translate(2%,-2%)" },
+          "90%": { transform: "translate(-3%,1%)" },
+        },
       },
       animation: {
-        "fade-in": "fade-in 0.3s ease-out",
-        marquee: "marquee 35s linear infinite",
+        "fade-up": "fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+        marquee: "marquee 40s linear infinite",
+        grain: "grain 8s steps(1) infinite",
       },
     },
   },
