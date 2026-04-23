@@ -1,167 +1,113 @@
 "use client";
-import { useState, useEffect } from "react";
+
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
-const NAV_LINKS = [
-  { label: "Portfolio", href: "/portfolio" },
-  { label: "Services", href: "/services" },
-  { label: "About", href: "/about" },
+const navLinks = [
+  { href: "/portfolio", label: "Portfolio" },
+  { href: "/services", label: "Services" },
+  { href: "/about", label: "About" },
 ];
 
 export function NavBar() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
-
-  const isHomepage = pathname === "/";
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
-    handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
-
-  // On homepage at the very top, float transparent over the hero image
-  const isTransparent = isHomepage && !scrolled && !menuOpen;
 
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-40 w-full transition-all duration-300",
-        isTransparent
-          ? "bg-transparent"
-          : scrolled
-            ? "bg-white/97 backdrop-blur-sm shadow-sm"
-            : "bg-white/95 backdrop-blur-sm"
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+        scrolled
+          ? "bg-cream/90 backdrop-blur-md border-b border-cream-deep/40 py-3"
+          : "bg-transparent py-5"
       )}
     >
-      <nav
-        className="section-container flex items-center justify-between h-16 md:h-18"
-        aria-label="Main navigation"
-      >
-        {/* Logo */}
-        <Link
-          href="/"
-          className="flex items-center gap-2.5 shrink-0"
-          aria-label="Sisters are Sassy Studio — home"
-        >
-          <Image
-            src="/logo.svg"
-            alt="Sisters are Sassy Studio logo"
-            width={40}
-            height={40}
-            className="w-8 h-8 md:w-9 md:h-9"
-            priority
-          />
+      <div className="section-container flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-3">
+          <Image src="/logo.svg" alt="Sisters Are Sassy Studio" width={34} height={34} />
           <span
             className={cn(
-              "font-heading text-sm md:text-base font-semibold leading-tight hidden sm:block transition-colors duration-300",
-              isTransparent ? "text-white" : "text-charcoal"
+              "font-heading text-lg tracking-wide transition-colors duration-300",
+              scrolled ? "text-ink" : "text-cream"
             )}
           >
-            Sisters are Sassy
-            <br />
-            <span className={isTransparent ? "text-white/70" : "text-teal"}>Studio</span>
+            Sisters Are Sassy
           </span>
         </Link>
 
-        {/* Desktop nav links */}
-        <div className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
+        {/* Desktop */}
+        <nav className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={cn(
-                "text-xs font-semibold uppercase tracking-[0.15em] font-body transition-colors duration-200",
-                isTransparent
-                  ? pathname === link.href
-                    ? "text-white"
-                    : "text-white/70 hover:text-white"
-                  : pathname === link.href
-                    ? "text-teal"
-                    : "text-charcoal hover:text-teal"
+                "font-body text-xs tracking-[0.18em] uppercase ink-underline transition-colors duration-300",
+                scrolled ? "text-ink" : "text-cream"
               )}
-              aria-current={pathname === link.href ? "page" : undefined}
             >
               {link.label}
             </Link>
           ))}
-        </div>
-
-        {/* Desktop CTA */}
-        <div className="hidden md:flex items-center">
           <Link
             href="/book"
             className={cn(
-              "text-xs font-semibold uppercase tracking-[0.15em] font-body px-6 py-3 transition-colors duration-200",
-              isTransparent
-                ? "bg-white/15 hover:bg-white/25 text-white border border-white/30 hover:border-white/60"
-                : "bg-teal hover:bg-teal-hover text-white"
+              "font-body text-xs tracking-[0.18em] uppercase px-5 py-2.5 border transition-all duration-300",
+              scrolled
+                ? "border-ink text-ink hover:bg-ink hover:text-cream"
+                : "border-cream/60 text-cream hover:border-cream hover:bg-cream/10"
             )}
           >
             Book a Session
           </Link>
-        </div>
+        </nav>
 
         {/* Mobile hamburger */}
         <button
           className={cn(
-            "md:hidden p-2 transition-colors duration-200",
-            isTransparent ? "text-white" : "text-charcoal hover:text-teal"
+            "md:hidden flex flex-col gap-[5px] p-2 transition-colors",
+            scrolled ? "text-ink" : "text-cream"
           )}
-          onClick={() => setMenuOpen((prev) => !prev)}
-          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle menu"
           aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
         >
-          {menuOpen ? <X size={22} /> : <Menu size={22} />}
+          <span className={cn("block w-6 h-px bg-current transition-all duration-300", menuOpen && "rotate-45 translate-y-[9px]")} />
+          <span className={cn("block w-6 h-px bg-current transition-all duration-300", menuOpen && "opacity-0")} />
+          <span className={cn("block w-6 h-px bg-current transition-all duration-300", menuOpen && "-rotate-45 -translate-y-[9px]")} />
         </button>
-      </nav>
+      </div>
 
-      {/* Mobile menu — always opaque */}
-      {menuOpen && (
-        <div
-          id="mobile-menu"
-          className="md:hidden border-t border-light-gray bg-white animate-fade-in"
-          role="navigation"
-          aria-label="Mobile navigation"
-        >
-          <div className="section-container py-4 flex flex-col gap-1">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "block px-3 py-3 text-sm font-medium transition-colors",
-                  pathname === link.href
-                    ? "bg-teal/10 text-teal"
-                    : "text-charcoal hover:bg-off-white hover:text-teal"
-                )}
-                aria-current={pathname === link.href ? "page" : undefined}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <div className="mt-3 pt-3 border-t border-light-gray">
-              <Link
-                href="/book"
-                className="block w-full text-center bg-teal hover:bg-teal-hover text-white text-xs font-semibold uppercase tracking-[0.15em] py-3.5 transition-colors"
-              >
-                Book a Session
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Mobile drawer */}
+      <div className={cn("md:hidden overflow-hidden transition-all duration-500 bg-cream", menuOpen ? "max-h-72 border-b border-cream-deep/40" : "max-h-0")}>
+        <nav className="section-container py-7 flex flex-col gap-5">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="font-body text-xs tracking-[0.18em] uppercase text-ink ink-underline"
+              onClick={() => setMenuOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <Link
+            href="/book"
+            className="font-body text-xs tracking-[0.18em] uppercase text-ink border border-ink px-5 py-2.5 self-start hover:bg-ink hover:text-cream transition-all duration-300"
+            onClick={() => setMenuOpen(false)}
+          >
+            Book a Session
+          </Link>
+        </nav>
+      </div>
     </header>
   );
 }
