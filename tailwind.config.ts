@@ -47,14 +47,6 @@ const config: Config = {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
-        grain: {
-          "0%, 100%": { transform: "translate(0,0)" },
-          "10%": { transform: "translate(-2%,-3%)" },
-          "30%": { transform: "translate(3%,2%)" },
-          "50%": { transform: "translate(-1%,4%)" },
-          "70%": { transform: "translate(2%,-2%)" },
-          "90%": { transform: "translate(-3%,1%)" },
-        },
       },
       animation: {
         "fade-up": "fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards",

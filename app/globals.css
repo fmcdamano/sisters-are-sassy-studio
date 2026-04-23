@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-2%, -3%); }
+  30% { transform: translate(3%, 2%); }
+  50% { transform: translate(-1%, 4%); }
+  70% { transform: translate(2%, -2%); }
+  90% { transform: translate(-3%, 1%); }
+}
+
 @layer base {
   *, *::before, *::after {
     box-sizing: border-box;
@@ -60,6 +69,7 @@
     opacity: 0.028;
     pointer-events: none;
     z-index: 9999;
+    will-change: transform;
     animation: grain 8s steps(1) infinite;
   }
 
