@@ -23,7 +23,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {error && (
-          <p id={id ? `${id}-error` : undefined} className="mt-1 text-xs text-studio-error">
+          <p id={id ? `${id}-error` : undefined} className="mt-1 text-xs text-studio-error" role="alert">
             {error}
           </p>
         )}
