@@ -1,25 +1,24 @@
-"use client";
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-btn text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-body text-sm tracking-widest uppercase transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-40 active:scale-[0.98]",
   {
     variants: {
       variant: {
-        default: "bg-teal text-white hover:bg-teal-hover",
-        coral: "bg-coral text-white hover:bg-coral-hover",
-        ghost: "border-2 border-teal text-teal hover:bg-teal/10",
-        outline: "border border-light-gray text-charcoal hover:border-teal hover:text-teal",
-        destructive: "bg-studio-error text-white hover:bg-red-600",
-        link: "text-teal underline-offset-4 hover:underline p-0 h-auto",
+        default: "bg-ink text-cream hover:bg-ink-soft",
+        terracotta: "bg-terracotta text-cream hover:bg-terracotta-hover",
+        outline: "border border-ink text-ink bg-transparent hover:bg-ink hover:text-cream",
+        ghost: "text-ink hover:text-terracotta",
+        link: "text-ink underline-offset-4 hover:underline p-0 h-auto",
+        destructive: "bg-studio-error text-cream hover:opacity-90",
       },
       size: {
-        default: "h-11 px-6 py-2.5",
-        sm: "h-9 px-4 text-xs",
-        lg: "h-13 px-8 text-base py-3",
+        default: "h-11 px-7 py-2.5",
+        sm: "h-8 px-4 py-1.5 text-xs",
+        lg: "h-13 px-10 py-3 text-base",
         icon: "h-10 w-10",
       },
     },
@@ -40,7 +39,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return (
-      <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+      <Comp
+        className={cn(buttonVariants({ variant, size, className }))}
+        ref={ref}
+        {...props}
+      />
     );
   }
 );
