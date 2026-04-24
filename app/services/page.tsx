@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PACKAGES } from "@/lib/constants/packages";
-import { ServiceCard } from "@/components/services/ServiceCard";
+import { ServicesList } from "@/components/services/ServicesList";
 import { BookingCTA } from "@/components/shared/BookingCTA";
 
 export const metadata: Metadata = {
@@ -18,43 +18,23 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <>
-      {/* Page Header */}
-      <section className="bg-white border-b border-light-gray">
-        <div className="section-container py-12 md:py-16">
-          <p className="text-teal text-xs font-semibold uppercase tracking-widest mb-3">
-            What we offer
-          </p>
-          <h1 className="font-heading text-4xl md:text-5xl text-charcoal mb-4">
-            Sessions &amp; Packages
-          </h1>
-          <p className="text-gray-500 text-base md:text-lg max-w-xl leading-relaxed">
-            Every session is thoughtfully crafted to feel natural, joyful, and completely yours. Choose the moment you&apos;re celebrating — we&apos;ll handle everything else.
-          </p>
-          <p className="mt-3 text-xs text-gray-400">
-            All prices in Philippine Peso (₱) · Prices include in-studio session and fully edited digital photos.
-          </p>
-        </div>
+    <main>
+      <section className="pt-36 pb-16 section-container">
+        <p className="text-[11px] tracking-[0.22em] uppercase text-ink-muted mb-4 font-body">
+          Our Sessions
+        </p>
+        <h1 className="font-heading italic text-5xl md:text-7xl lg:text-[5.5rem] text-ink leading-[0.92]">
+          Choose your<br />perfect session.
+        </h1>
       </section>
 
-      {/* Package Cards */}
       <section className="section-py">
         <div className="section-container">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {PACKAGES.map((pkg) => (
-              <ServiceCard key={pkg.id} pkg={pkg} />
-            ))}
-          </div>
-
-          {/* Client confirmation note */}
-          <p className="mt-8 text-center text-xs text-gray-400 max-w-md mx-auto">
-            Pricing and inclusions are subject to confirmation by the studio before your session.
-            Contact us on Facebook for the most up-to-date packages.
-          </p>
+          <ServicesList packages={PACKAGES} />
         </div>
       </section>
 
       <BookingCTA />
-    </>
+    </main>
   );
 }
