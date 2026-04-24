@@ -58,16 +58,20 @@ export function PortfolioPreviewGrid() {
 
         <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] gap-[3px]">
           {previews.map((item, i) => (
-            <ScrollReveal key={item.filename} delay={i * 0.07} className={item.gridClass}>
+            <ScrollReveal
+              key={item.filename}
+              delay={i * 0.07}
+              className={`${item.gridClass} ${item.heightClass}`}
+            >
               <Link
                 href="/portfolio"
-                className={`group relative block overflow-hidden bg-cream-deep w-full ${item.heightClass}`}
+                className="group relative block overflow-hidden bg-cream-deep w-full h-full"
               >
                 <Image
                   src={`/portfolio/${item.filename}`}
                   alt={item.alt}
                   fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
+                  sizes={i === 0 ? "(max-width: 768px) 100vw, 44vw" : "(max-width: 768px) 100vw, 33vw"}
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/20 transition-colors duration-500" />

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { ScrollReveal } from "./ScrollReveal";
 
 const sessions = [
@@ -53,26 +54,23 @@ export function SessionCategoryTeaser() {
         {/* Desktop: accordion expand-on-hover strips */}
         <div className="hidden md:flex gap-[3px] h-[540px]">
           {sessions.map((session, i) => (
-            <ScrollReveal key={session.label} delay={i * 0.06}>
-              <Link
-                href={session.href}
-                className="group relative block overflow-hidden h-[540px]"
-                style={{
-                  flex: "1",
-                  transition: "flex 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.flex = "2.5";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.flex = "1";
-                }}
-              >
+            <motion.div
+              key={session.label}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ type: "spring", stiffness: 55, damping: 18, delay: i * 0.06 }}
+              style={{ flex: "1", transition: "flex 0.7s cubic-bezier(0.16, 1, 0.3, 1)" }}
+              className="relative overflow-hidden h-[540px]"
+              onMouseEnter={(e) => { e.currentTarget.style.flex = "2.5"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.flex = "1"; }}
+            >
+              <Link href={session.href} className="group block w-full h-full">
                 <Image
                   src={`/portfolio/${session.filename}`}
                   alt={session.label}
                   fill
-                  sizes="20vw"
+                  sizes="(max-width: 1024px) 20vw, 30vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/10 to-transparent" />
@@ -85,7 +83,7 @@ export function SessionCategoryTeaser() {
                   </p>
                 </div>
               </Link>
-            </ScrollReveal>
+            </motion.div>
           ))}
         </div>
 
