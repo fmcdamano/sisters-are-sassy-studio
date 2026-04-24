@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { PortfolioGrid } from "@/components/portfolio/PortfolioGrid";
+import { FilterBar } from "@/components/portfolio/FilterBar";
 import { BookingCTA } from "@/components/shared/BookingCTA";
 
 export const metadata: Metadata = {
@@ -19,20 +20,29 @@ export const metadata: Metadata = {
 export default function PortfolioPage() {
   return (
     <>
-      {/* Page Header */}
-      <section className="bg-white border-b border-light-gray">
-        <div className="section-container py-12 md:py-16">
-          <p className="text-teal text-xs font-semibold uppercase tracking-widest mb-3">
-            Our work
-          </p>
-          <h1 className="font-heading text-4xl md:text-5xl text-charcoal mb-4">
+      {/* Page header */}
+      <section className="pt-36 pb-12 bg-cream">
+        <div className="section-container">
+          <p className="text-[11px] tracking-[0.22em] uppercase text-ink-muted mb-4 font-body">
             Portfolio
+          </p>
+          <h1 className="font-heading italic text-5xl md:text-6xl lg:text-7xl text-ink leading-tight mb-5">
+            Photographs that<br />tell your story.
           </h1>
-          <p className="text-gray-500 text-base md:text-lg max-w-xl leading-relaxed">
-            Every image here tells a real story — families, newborns, milestones, and celebrations, all captured right here in Tacloban City since 2013.
+          <p className="text-ink-muted font-body text-base max-w-lg leading-relaxed">
+            Browse newborn, maternity, family, and milestone sessions from our studio in Tacloban City.
           </p>
         </div>
       </section>
+
+      {/* Sticky filter bar */}
+      <div className="sticky top-0 z-40 bg-cream/90 backdrop-blur-sm border-b border-cream-deep/40 py-4">
+        <div className="section-container">
+          <Suspense>
+            <FilterBar />
+          </Suspense>
+        </div>
+      </div>
 
       {/* Grid — wrapped in Suspense because PortfolioGrid uses useSearchParams */}
       <section className="section-py">

@@ -1,40 +1,44 @@
 "use client";
+
+import { useSearchParams, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-export const PORTFOLIO_FILTERS = [
-  { label: "All", value: "all" },
-  { label: "Newborn", value: "newborn" },
-  { label: "Easter Baby", value: "easter" },
-  { label: "Toddler", value: "toddler" },
-  { label: "Maternity", value: "maternity" },
-  { label: "Family", value: "family" },
-  { label: "Birthday", value: "birthday" },
-  { label: "Christmas", value: "christmas" },
-  { label: "Professional", value: "professional" },
+const filters = [
+  { value: "all", label: "All" },
+  { value: "newborn", label: "Newborn" },
+  { value: "maternity", label: "Maternity" },
+  { value: "family", label: "Family" },
+  { value: "birthday", label: "Birthday" },
+  { value: "toddler", label: "Toddler" },
+  { value: "easter", label: "Easter" },
+  { value: "christmas", label: "Christmas" },
+  { value: "professional", label: "Professional" },
 ];
 
-interface FilterBarProps {
-  activeFilter: string;
-  onFilterChange: (filter: string) => void;
-}
+export function FilterBar() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const active = searchParams.get("filter") ?? "all";
 
-export function FilterBar({ activeFilter, onFilterChange }: FilterBarProps) {
+  const setFilter = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value === "all") params.delete("filter");
+    else params.set("filter", value);
+    router.push(`/portfolio?${params.toString()}`, { scroll: false });
+  };
+
   return (
-    <div
-      className="flex gap-2 overflow-x-auto scrollbar-hide py-1"
-      role="group"
-      aria-label="Filter portfolio by session type"
-    >
-      {PORTFOLIO_FILTERS.map((filter) => (
+    <div className="flex gap-7 overflow-x-auto scrollbar-hide pb-1">
+      {filters.map((filter) => (
         <button
           key={filter.value}
-          onClick={() => onFilterChange(filter.value)}
-          aria-pressed={activeFilter === filter.value}
+          onClick={() => setFilter(filter.value)}
+          aria-pressed={active === filter.value}
           className={cn(
-            "flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal",
-            activeFilter === filter.value
-              ? "bg-teal text-white border-teal"
-              : "bg-white text-charcoal border-light-gray hover:border-teal hover:text-teal"
+            "font-body text-xs tracking-[0.18em] uppercase whitespace-nowrap pb-1.5 border-b-[1.5px] transition-all duration-200 flex-shrink-0",
+            active === filter.value
+              ? "border-ink text-ink"
+              : "border-transparent text-ink-muted hover:text-ink"
           )}
         >
           {filter.label}
