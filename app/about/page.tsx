@@ -19,19 +19,11 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <>
-      {/* Page Header */}
-      <section className="bg-white border-b border-light-gray">
-        <div className="section-container py-12 md:py-16">
-          <p className="text-teal text-xs font-semibold uppercase tracking-widest mb-3">
-            Who we are
-          </p>
-          <h1 className="font-heading text-4xl md:text-5xl text-charcoal mb-4">
-            About the Studio
-          </h1>
-          <p className="text-gray-500 text-base md:text-lg max-w-xl leading-relaxed">
-            A family studio rooted in Tacloban City, Leyte — capturing milestones with heart since 2013.
-          </p>
-        </div>
+      <section className="pt-36 pb-4 section-container">
+        <p className="text-[11px] tracking-[0.22em] uppercase text-ink-muted mb-4 font-body">About Us</p>
+        <h1 className="font-heading italic text-5xl md:text-7xl lg:text-[5.5rem] text-ink leading-[0.92]">
+          The people<br />behind the lens.
+        </h1>
       </section>
 
       <StudioStory />
