@@ -1,40 +1,38 @@
 import Link from "next/link";
+import { ScrollReveal } from "@/components/home/ScrollReveal";
 
-interface BookingCTAProps {
-  sessionType?: string;
-}
-
-export function BookingCTA({ sessionType }: BookingCTAProps) {
-  const bookHref = sessionType ? `/book?type=${sessionType}` : "/book";
-
+export function BookingCTA() {
   return (
-    <section className="bg-teal">
-      <div className="section-container py-20 md:py-28">
-        <div className="max-w-2xl">
-          <p className="text-white/60 text-[10px] font-semibold uppercase tracking-[0.3em] mb-5 font-body">
-            Ready when you are
-          </p>
-          <h2 className="font-heading italic text-white text-4xl md:text-5xl lg:text-6xl leading-[1.05] mb-8">
-            Ready to book your session?
-          </h2>
-          <p className="text-white/75 text-base md:text-lg leading-relaxed mb-10 max-w-lg font-body">
-            It only takes a few minutes to reserve your date. Tell us what you&apos;re celebrating and we&apos;ll take care of everything from there.
-          </p>
-          <div className="flex items-center gap-6 flex-wrap">
-            <Link
-              href={bookHref}
-              className="inline-block bg-white hover:bg-off-white text-teal text-xs font-semibold uppercase tracking-[0.2em] px-10 py-4 transition-colors duration-200 font-body"
-            >
-              Book a Session
-            </Link>
-            <Link
-              href="/portfolio"
-              className="text-white/70 hover:text-white text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-200 pb-0.5 border-b border-white/30 hover:border-white/70 font-body"
-            >
-              View Portfolio
-            </Link>
+    <section className="bg-ink py-28 md:py-36 overflow-hidden">
+      <div className="section-container">
+        <ScrollReveal>
+          <div className="max-w-3xl">
+            <p className="text-[11px] tracking-[0.22em] uppercase text-cream/35 mb-6 font-body">
+              Ready when you are
+            </p>
+            <h2 className="font-heading italic text-5xl md:text-6xl lg:text-7xl text-cream leading-[1.0] mb-8">
+              Let&apos;s create something<br />
+              <span className="text-terracotta">worth keeping.</span>
+            </h2>
+            <p className="text-cream/55 text-base md:text-lg font-body leading-relaxed max-w-md mb-12">
+              Sessions fill quickly. Reach out now and we&apos;ll find the perfect time to photograph your family.
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <Link
+                href="/book"
+                className="font-body text-xs tracking-[0.18em] uppercase px-9 py-3.5 bg-cream text-ink hover:bg-cream-warm transition-colors duration-300"
+              >
+                Book a Session
+              </Link>
+              <Link
+                href="/portfolio"
+                className="font-body text-xs tracking-[0.18em] uppercase px-9 py-3.5 border border-cream/25 text-cream/65 hover:border-cream/60 hover:text-cream transition-all duration-300"
+              >
+                See Our Work
+              </Link>
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );
