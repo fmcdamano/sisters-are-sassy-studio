@@ -16,6 +16,10 @@ export function NavBar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  // Transparent hero treatment only on the homepage while at the top
+  const isTransparent = isHome && !scrolled;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -42,9 +46,9 @@ export function NavBar() {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        scrolled
-          ? "bg-cream/90 backdrop-blur-md border-b border-cream-deep/40 py-3"
-          : "bg-transparent py-5"
+        isTransparent
+          ? "bg-transparent py-5"
+          : "bg-cream/90 backdrop-blur-md border-b border-cream-deep/40 py-3"
       )}
     >
       <div className="section-container flex items-center justify-between">
@@ -53,7 +57,7 @@ export function NavBar() {
           <span
             className={cn(
               "font-heading text-lg tracking-wide transition-colors duration-300",
-              scrolled ? "text-ink" : "text-cream"
+              isTransparent ? "text-cream" : "text-ink"
             )}
           >
             Sisters Are Sassy
@@ -68,7 +72,7 @@ export function NavBar() {
               href={link.href}
               className={cn(
                 "font-body text-xs tracking-[0.18em] uppercase ink-underline transition-colors duration-300",
-                scrolled ? "text-ink" : "text-cream"
+                isTransparent ? "text-cream" : "text-ink"
               )}
             >
               {link.label}
@@ -78,9 +82,9 @@ export function NavBar() {
             href="/book"
             className={cn(
               "font-body text-xs tracking-[0.18em] uppercase px-5 py-2.5 border transition-all duration-300",
-              scrolled
-                ? "border-ink text-ink hover:bg-ink hover:text-cream"
-                : "border-cream/60 text-cream hover:border-cream hover:bg-cream/10"
+              isTransparent
+                ? "border-cream/60 text-cream hover:border-cream hover:bg-cream/10"
+                : "border-ink text-ink hover:bg-ink hover:text-cream"
             )}
           >
             Book a Session
@@ -91,7 +95,7 @@ export function NavBar() {
         <button
           className={cn(
             "md:hidden flex flex-col gap-[5px] p-2 transition-colors",
-            scrolled ? "text-ink" : "text-cream"
+            isTransparent ? "text-cream" : "text-ink"
           )}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Navigation menu"
