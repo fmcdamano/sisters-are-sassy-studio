@@ -221,7 +221,7 @@ export function BookingForm() {
           onChange={(e) => handleChange("eventDate", e.target.value)}
           error={errors.eventDate}
         />
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-ink-muted">
           We&apos;ll confirm availability after you submit — this is your preferred date, not a guaranteed booking.
         </p>
       </div>
@@ -244,7 +244,7 @@ export function BookingForm() {
       <div className="space-y-1.5">
         <Label htmlFor="email">
           Email Address{" "}
-          <span className="text-gray-400 font-normal">(optional — for booking confirmation)</span>
+          <span className="text-ink-muted font-normal">(optional — for booking confirmation)</span>
         </Label>
         <Input
           id="email"
@@ -257,7 +257,10 @@ export function BookingForm() {
         />
       </div>
 
-      <Button type="submit" size="lg" className="w-full">
+      <Button
+        type="submit"
+        className="w-full bg-ink text-cream hover:bg-ink-soft font-body text-xs tracking-[0.18em] uppercase px-8 py-3.5"
+      >
         Review Booking
       </Button>
     </form>

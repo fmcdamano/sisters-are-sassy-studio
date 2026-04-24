@@ -18,28 +18,22 @@ export const metadata: Metadata = {
 
 export default function BookPage() {
   return (
-    <section className="section-py">
-      <div className="section-container">
-        <div className="max-w-xl mx-auto">
-          {/* Header */}
-          <div className="mb-10">
-            <p className="text-teal text-xs font-semibold uppercase tracking-widest mb-3">
-              Let&apos;s do this
-            </p>
-            <h1 className="font-heading text-4xl md:text-5xl text-charcoal mb-4">
-              Book a Session
-            </h1>
-            <p className="text-gray-500 leading-relaxed">
-              Tell us a little about your session and we&apos;ll confirm everything by email. It only takes a few minutes.
-            </p>
-          </div>
+    <>
+      <section className="pt-36 pb-4 section-container">
+        <p className="text-[11px] tracking-[0.22em] uppercase text-ink-muted mb-4 font-body">Book a Session</p>
+        <h1 className="font-heading italic text-5xl md:text-7xl lg:text-[5.5rem] text-ink leading-[0.92]">
+          Let's create<br />something beautiful.
+        </h1>
+      </section>
 
+      <div className="section-container pb-24">
+        <div className="max-w-xl mx-auto">
           {/* Form — wrapped in Suspense because BookingForm uses useSearchParams */}
-          <Suspense fallback={<div className="h-64 flex items-center justify-center text-gray-400 text-sm">Loading form…</div>}>
+          <Suspense fallback={<div className="h-64 flex items-center justify-center text-ink-muted text-sm">Loading form…</div>}>
             <BookingForm />
           </Suspense>
         </div>
       </div>
-    </section>
+    </>
   );
 }
