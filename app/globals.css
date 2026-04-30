@@ -84,4 +84,11 @@
   .ink-underline:hover {
     background-size: 100% 1px;
   }
+
+  /* Marquee — keep speed consistent on small screens */
+  @media (max-width: 767px) {
+    .animate-marquee {
+      animation-duration: 10s;
+    }
+  }
 }

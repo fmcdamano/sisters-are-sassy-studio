@@ -50,7 +50,7 @@ const config: Config = {
       },
       animation: {
         "fade-up": "fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards",
-        marquee: "marquee 22s linear infinite",
+        marquee: "marquee 12s linear infinite",
         grain: "grain 8s steps(1) infinite",
       },
     },
